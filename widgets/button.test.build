@@ -1,0 +1,6 @@
+#!/bin/sh
+
+g++ misc.c    -ltermbox -c
+g++ button.cc -ltermbox -c
+
+g++ button.test.cc misc.o widget.o button.o -ltermbox -Wno-write-strings -o button.test
