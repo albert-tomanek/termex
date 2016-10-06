@@ -1,0 +1,6 @@
+#!/bin/sh
+
+g++ misc.c    -ltermbox -c
+g++ label.cc  -ltermbox -c
+
+g++ label.test.cc misc.o widget.o label.o -ltermbox -Wno-write-strings -o label.test

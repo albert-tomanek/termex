@@ -5,8 +5,8 @@
 
 #include "chars.h"
 #include "misc.h"
-#include "button.hh"
 #include "widget.hh"
+#include "label.hh"
 
 Button :: Button(char *text)
 {
