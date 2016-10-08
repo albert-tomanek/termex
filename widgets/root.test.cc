@@ -17,11 +17,7 @@ int main()
 	myRoot.add(&button2, 8, 8);
 	myRoot.add(&button3,12,12);
 	
-	myRoot.draw_all();
-	tb_present();
-	usleep(1000000);
-	
-	//myRoot->mainloop();
+	myRoot.mainloop();
 	
 	tb_shutdown();
 	

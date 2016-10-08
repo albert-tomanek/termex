@@ -5,7 +5,7 @@
   #define __TX_ROOT_H__
 
   // How often the terminal updates (sec)
-  #define TX_UPDATE 0.1
+  #define TX_UPDATE_TIME 100
 
   // Widgets are stored in a circular linked list of these...
 

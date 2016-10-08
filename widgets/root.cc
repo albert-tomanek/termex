@@ -78,6 +78,7 @@ void Root :: draw_all()
 void Root :: mainloop()
 {
 	this->run = true;
+	struct tb_event *event = (struct tb_event*) malloc(sizeof(struct tb_event));
 
 	while (this->run)
 	{
@@ -87,7 +88,16 @@ void Root :: mainloop()
 		/* Update the terminal */
 		tb_present();
 
-		usleep(TX_UPDATE * 1000000);
+		/* Wait for any keypresses */
+		tb_peek_event(event, TX_UPDATE_TIME);
+
+		switch (event->key)
+		{
+			case (TB_KEY_ESC):
+			{
+				this->run = false;
+			}
+		}
 	}
 }
 
