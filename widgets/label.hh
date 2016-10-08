@@ -4,8 +4,8 @@
 
 #include "widget.hh"
 
-#ifndef __TX_W_BUTTON__
-  #define __TX_W_BUTTON_H__
+#ifndef __TX_W_LABEL_H__
+  #define __TX_W_LABEL_H__
 
   class Label : public Widget
   {

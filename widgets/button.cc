@@ -6,7 +6,7 @@
 #include "chars.h"
 #include "misc.h"
 #include "widget.hh"
-#include "label.hh"
+#include "button.hh"
 
 Button :: Button(char *text)
 {
