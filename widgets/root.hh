@@ -1,11 +1,9 @@
 #include <stdint.h>
 #include "widgets.hh"
+#include "params.h"
 
 #ifndef __TX_ROOT_H__
   #define __TX_ROOT_H__
-
-  // How often the terminal updates (sec)
-  #define TX_UPDATE_TIME 100
 
   // Widgets are stored in a circular linked list of these...
 
@@ -22,6 +20,7 @@
   class Root
   {
 	  struct  Widget_cell *first_widget;
+	  struct  Widget_cell *active_widget;
 	  uint8_t widget_count;
 	  bool    run;
 

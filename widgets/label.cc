@@ -27,15 +27,14 @@ Label :: ~Label()
 	free(this->text);
 }
 
-void Label :: select()
+void Label :: process(struct tb_event* event)
 {
 }
 
-void Label :: deselect()
+void Label :: draw(int x, int y, State state)
 {
-}
+	this->x = x;
+	this->y = y;
 
-void Label :: draw(int x, int y)
-{
 	tb_print(x+2, y+1, this->text, this->fg, this->bg);
 }

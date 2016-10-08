@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <termbox.h>
 
+#include "params.h"
 #include "chars.h"
 #include "misc.h"
 #include "widget.hh"
@@ -27,18 +28,42 @@ Button :: ~Button()
 	free(this->text);
 }
 
-void Button :: select()
+void Button :: press()
 {
-	this->state = SELECT;
+	State orig_state = this->state;
+
+	this->state = PRESSED;
+	this->process_state();
+	this->draw(this->x, this->y, this->state);
+	tb_present();
+
+ // callback();					// Call a callback that is not implemented yet
+	tb_sleep(TX_UPDATE_RATE);
+
+	this->state = orig_state;
+	this->process_state();
+	tb_present();
 }
 
-void Button :: deselect()
+void Button :: process(struct tb_event* event)
 {
-	this->state = NORMAL;
+	switch (event->key)
+	{
+		case (TB_KEY_SPACE):
+		case (TB_KEY_ENTER):
+		{
+			this->press();
+			break;
+		}
+	}
 }
 
-void Button :: draw(int x, int y)
+void Button :: draw(int x, int y, State state)
 {
+	this->x = x;
+	this->y = y;
+
+	this->state = state;
 	this->process_state();
 
 	tb_draw_box_wh(x, y, strlen(this->text)+3, 2, this->fg, this->bg);

@@ -11,7 +11,7 @@
   {
 	  char *text;
 
-	  void process_state();
+	  void process_state();		// Change the bg and fg colour accordint to this->state.
 
   public:
 	  /* Constructor and destructor */
@@ -19,9 +19,10 @@
 	  ~Button();
 
 	  /* Other stuff */
-	  virtual void select();
-	  virtual void deselect();
-	  virtual void draw(int x, int y);
+	  void press();
+
+	  virtual void draw(int x, int y, State state);
+	  virtual void process(struct tb_event* event);
   };
 
 #endif

@@ -20,11 +20,12 @@
   	  State    state;
 	  uint16_t fg;
 	  uint16_t bg;
+	  uint8_t  x;
+      uint8_t  y;
 	  
 	  /* Virtual functions */
-	  virtual void select() {};
-	  virtual void deselect() {};
-	  virtual void draw(int x, int y) {};
+	  virtual void draw(int x, int y, State state) {};
+	  virtual void process(struct tb_event* event) {};        // Process events like keypresses
   };
 	
 #endif

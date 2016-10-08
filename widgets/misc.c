@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <termbox.h>
 
+#include <unistd.h>
+
 #include "misc.h"
 #include "chars.h"
 
@@ -115,4 +117,9 @@ void tb_draw_box_wh(int tl_x, int tl_y, int width, int height, uint16_t fg, uint
 		}
 	}
 
+}
+
+int tb_sleep(int millisecs)
+{
+	usleep(millisecs * 1000);
 }

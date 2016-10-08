@@ -17,9 +17,8 @@
 	  ~Label();
 
 	  /* Other stuff */
-	  virtual void select();
-	  virtual void deselect();
-	  virtual void draw(int x, int y);
+	  virtual void draw(int x, int y, State state);
+	  virtual void process(struct tb_event* event);
   };
 
 #endif
