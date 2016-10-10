@@ -154,6 +154,18 @@ struct Widget_cell* widgets_getlast(struct Widget_cell *first)
 	return prev;
 }
 
+struct Widget_cell* widgets_get(struct Widget_cell *current, int index)
+{
+	// Get the widget 'index' places after 'current'
+
+	for (int i = 0; i < index && current->next != NULL; i++)
+	{
+		current = current->next;
+	}
+
+	return current;
+}
+
 void widgets_free(struct Widget_cell *first)
 {
 	struct Widget_cell *next;

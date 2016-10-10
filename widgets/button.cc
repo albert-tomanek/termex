@@ -11,8 +11,9 @@
 
 Button :: Button(char *text)
 {
-	/* Make the button inactive */
-	this->state = NORMAL;				// For the enum see widget.hh
+	/* Initialise variables */
+	this->state = NORMAL;				// Make the button inactive; for the enum see widget.hh
+	this->callback_function = NULL;		// No callback function yet
 
 	/* Set the default colours */
 	this->fg = TB_WHITE;
@@ -37,12 +38,18 @@ void Button :: press()
 	this->draw(this->x, this->y, this->state);
 	tb_present();
 
- // callback();					// Call a callback that is not implemented yet
+	if (this->callback_function)
+		this->callback_function();			// Call the callback function
 	tb_sleep(TX_UPDATE_RATE);
 
 	this->state = orig_state;
 	this->process_state();
 	tb_present();
+}
+
+void Button :: bind(void (*func)())
+{
+	this->callback_function = func;
 }
 
 void Button :: process(struct tb_event* event)
