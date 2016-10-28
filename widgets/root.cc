@@ -18,6 +18,9 @@ void widgets_free(struct Widget_cell *first);
 
 Root :: Root()
 {
+	/* Start termbox */
+	tb_init();			// This has to be in the constructor, else root.height() & .width() wouldn't work.
+
 	this->first_widget  = NULL;
 	this->active_widget = NULL;
 	this->widget_count  = 0;
@@ -77,6 +80,16 @@ class Widget* Root :: get_widget(int index)
 	return widgets_get(this->first_widget, index)->widget;
 }
 
+int Root :: width()
+{
+	return tb_width();
+}
+
+int Root :: height()
+{
+	return tb_height();
+}
+
 void Root :: draw_all()
 {
 	/* Draw the background */
@@ -105,9 +118,6 @@ void Root :: mainloop()
 {
 	this->run = true;
 	struct tb_event *event = (struct tb_event*) malloc(sizeof(struct tb_event));
-
-	/* Start termbox */
-	tb_init();
 
 	/* The update loop */
 

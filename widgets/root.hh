@@ -19,13 +19,15 @@
 
   class Root
   {
+	  uint16_t x, y;
+
 	  struct  Widget_cell *first_widget;
 	  struct  Widget_cell *active_widget;
 	  uint8_t widget_count;
-	  bool    run;
 
+	  bool    run;
   public:
-	  /* Background colour */
+	  /* Public variables */
 	  uint16_t bg;
 
 	  /* Constructor and Destructor */
@@ -38,6 +40,8 @@
 	  class Widget* get_widget(int index);
 
 	  void draw_all();
+	  int  width();
+	  int  height();
 
 	  void quit();
 	  void mainloop();
