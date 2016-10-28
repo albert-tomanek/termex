@@ -4,12 +4,14 @@
 #include <unistd.h>
 
 #include "params.h"
+#include "misc.h"
 #include "root.hh"
 #include "widget.hh"
 
 /* Linked list functions */
 
 struct Widget_cell* widgets_getlast(struct Widget_cell *current);
+struct Widget_cell* widgets_get(struct Widget_cell *current, int index);
 void widgets_free(struct Widget_cell *first);
 
 //
@@ -19,6 +21,8 @@ Root :: Root()
 	this->first_widget  = NULL;
 	this->active_widget = NULL;
 	this->widget_count  = 0;
+
+	this->bg = TB_DEFAULT;	// Black background
 
 	this->run = false;
 }
@@ -30,6 +34,9 @@ Root :: ~Root()
 
 void Root :: add(Widget *widget, uint8_t x, uint8_t y)
 {
+	/* Make ourselves the widget's parent */
+	widget->parent = this;
+
 	/* Make us a new widget_cell */
 	struct Widget_cell *current = (struct Widget_cell*) malloc(sizeof(struct Widget_cell));
 
@@ -61,13 +68,28 @@ int Root :: count_widgets()
 	return this->widget_count;
 }
 
+class Widget* Root :: get_widget(int index)
+{
+	/* Technically not the mose *correct* way	*
+	 * to get a reference to a widget, 			*
+	 * but I could not find a better way...		*/
+
+	return widgets_get(this->first_widget, index)->widget;
+}
+
 void Root :: draw_all()
 {
+	/* Draw the background */
+	tb_fill(0, 0, tb_width(), tb_height(), this->bg);		// from misc.h
+
+	/* Draw the widgets */
+
 	struct Widget_cell *current = this->first_widget;
 
 	if (! current)		// In case there are no widgets yet
 		return;
 
+	/* Loop over each widget and draw it */
 	do
 	{
 		/* Draw the widget */
@@ -91,6 +113,9 @@ void Root :: mainloop()
 
 	while (this->run)
 	{
+		/* Clear the screen first */
+		tb_clear();
+
 		/* Draw all the widgets */
 		this->draw_all();
 

@@ -10,7 +10,7 @@
   class Button : public Widget
   {
 	  char *text;
-	  void (*callback_function)();
+	  void (*callback_function)(Button *self);
 
 	  void process_state();		// Change the bg and fg colour accordint to this->state.
 
@@ -20,11 +20,12 @@
 	  ~Button();
 
 	  /* Other stuff */
+	  void bind(void (*func)(Button *self));
 	  void press();
+	  void set_text(char *text);
 
 	  virtual void draw(int x, int y, State state);
 	  virtual void process(struct tb_event* event);
-	  void bind(void (*func)());
   };
 
 #endif

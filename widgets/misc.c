@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <termbox.h>
-
+#include <stdio.h>
 #include <unistd.h>
 
 #include "misc.h"
@@ -54,6 +54,11 @@ void tb_print(int x, int y, char *string, uint16_t fg, uint16_t bg)
 
 void tb_draw_box(int tl_x, int tl_y, int br_x, int br_y, uint16_t fg, uint16_t bg)
 {
+	/* MAY NOT WORK							*
+	 * This function has not been checked	*
+	 * since major changes were made to		*
+	 * tb_draw_box_wh().					*/
+
 	int width  = br_x - tl_x;
 	int height = br_y - tl_y;
 
@@ -76,50 +81,51 @@ void tb_draw_box(int tl_x, int tl_y, int br_x, int br_y, uint16_t fg, uint16_t b
 
 	/* Also, we should fill the box with the given colour */
 
-	for (int x = 0; x < (width - 1); x++)
-	{
-		for (int y = 0; y < (height - 1); y++)
-		{
-			tb_change_cell(1 + tl_x + x, 1 + tl_y + y, TB_CHAR_SPACE, fg, bg);	 // For now, we have to fill it with a space character, so the box's contents will have to be re-written.
-		}
-	}
+	tb_fill(tl_x, tl_y, br_x, br_y, bg);
 }
 
 void tb_draw_box_wh(int tl_x, int tl_y, int width, int height, uint16_t fg, uint16_t bg)
 {
-	int br_x = tl_x + width ;
+		// +1 for the right outline
+		// +1 for the bottom outline
+
+	int br_x = tl_x + width;
 	int br_y = tl_y + height;
+
+	/* Fill the area */
+	tb_fill(tl_x, tl_y, br_x, br_y, bg);
 
 	tb_change_cell(tl_x, tl_y, TB_BOX_se, fg, bg);	 			 // Top Left
 	tb_change_cell(br_x, tl_y, TB_BOX_sw, fg, bg);	 			 // Top Right
 	tb_change_cell(br_x, br_y, TB_BOX_nw, fg, bg);	 			 // Bottom Right
 	tb_change_cell(tl_x, br_y, TB_BOX_ne, fg, bg);	 			 // Bottom Left
 
-	for (int i = 0; i < (width - 1); i++)			 // Horizontals
+	for (int x = tl_x+1; x <= br_x-1; x++)			 // Horizontals
 	{
-		tb_change_cell(1 + tl_x + i, tl_y, TB_BOX_ew, fg, bg);	 // N
-		tb_change_cell(1 + tl_x + i, br_y, TB_BOX_ew, fg, bg);	 // S
+		tb_change_cell(x, tl_y, TB_BOX_ew, fg, bg);	 // N
+		tb_change_cell(x, br_y, TB_BOX_ew, fg, bg);	 // S
 	}
 
-	for (int i = 0; i < (height - 1); i++)			 // Verticals
+	for (int y = tl_y+1; y <= br_y-1; y++)			 // Verticals
 	{
-		tb_change_cell(tl_x, 1 + tl_y + i, TB_BOX_ns, fg, bg);	 // E
-		tb_change_cell(br_x, 1 + tl_y + i, TB_BOX_ns, fg, bg);	 // W
+		tb_change_cell(tl_x, y, TB_BOX_ns, fg, bg);	 // E
+		tb_change_cell(br_x, y, TB_BOX_ns, fg, bg);	 // W
 	}
+}
 
-	/* Also, we should fill the box with the given colour */
-
-	for (int x = 0; x < (width - 1); x++)
+void tb_fill(int tl_x, int tl_y, int br_x, int br_y, uint16_t bg)
+{
+	for (int x = tl_x; x <= br_x; x++)
 	{
-		for (int y = 0; y < (height - 1); y++)
+		for (int y = tl_y; y <= br_y; y++)
 		{
-			tb_change_cell(1 + tl_x + x, 1 + tl_y + y, TB_CHAR_SPACE, fg, bg);	 // For now, we have to fill it with a space character, so the box's contents will have to be re-written.
+			tb_change_cell(x, y, ' ', TB_DEFAULT, bg);
 		}
 	}
-
 }
 
 int tb_sleep(int millisecs)
 {
+	/* For portability */
 	usleep(millisecs * 1000);
 }

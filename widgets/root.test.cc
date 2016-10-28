@@ -5,20 +5,29 @@
 #include "widget.hh"
 #include "root.hh"
 
-void test()
+void button1_callback(Button *button1)
 {
-	printf("Test function called!\t");
+	Label *label = (Label*) button1->parent->get_widget(2);		// It's the 3rd widget add()ed below
+	label->set_text("Say cheese!");
+}
+
+void button2_callback(Button *button2)
+{
+	Button *button1 = (Button*) button2->parent->get_widget(0);
+	button1->set_text("Baz");
 }
 
 int main()
 {
 	Root *root = new Root();
+	//root->bg = TB_YELLOW;		// Change the background colour
 	
-	Button *button1 = new Button("Foo");
-	Button *button2 = new Button("Bar");
-	Label  *label   = new Label("Hello, world!");
+	Button *button1 = new Button("Foo");				// Widget 0
+	Button *button2 = new Button("Bar");				// Widget 1
+	Label  *label   = new Label("Hello, world!");		// WIdget 2
 	
-	button1->bind(test);
+	button1->bind(button1_callback);
+	button2->bind(button2_callback);
 	
 	root->add(button1, 2, 2);
 	root->add(button2, 12, 2);

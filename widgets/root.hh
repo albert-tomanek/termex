@@ -8,7 +8,7 @@
   // Widgets are stored in a circular linked list of these...
 
   struct Widget_cell {
-	  Widget *widget;
+	  class Widget *widget;
 	  uint8_t x;
 	  uint8_t y;
 
@@ -25,6 +25,9 @@
 	  bool    run;
 
   public:
+	  /* Background colour */
+	  uint16_t bg;
+
 	  /* Constructor and Destructor */
 	  Root();
 	  ~Root();
@@ -32,10 +35,12 @@
 	  /* Methods */
 	  void add(Widget *widget, uint8_t x, uint8_t y);
 	  int  count_widgets();
-	  void quit();
-	  void mainloop();
+	  class Widget* get_widget(int index);
 
 	  void draw_all();
+
+	  void quit();
+	  void mainloop();
   };
 
 #endif

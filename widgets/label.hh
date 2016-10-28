@@ -17,6 +17,8 @@
 	  ~Label();
 
 	  /* Other stuff */
+	  void set_text(char *text);
+
 	  virtual void draw(int x, int y, State state);
 	  virtual void process(struct tb_event* event);
   };

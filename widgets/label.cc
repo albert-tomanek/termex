@@ -12,6 +12,7 @@ Label :: Label(char *text)
 {
 	/* Make the button inactive */
 	this->state = NORMAL;				// For the enum see widget.hh
+	this->parent = NULL;				// No parents yet
 
 	/* Set the default colours */
 	this->fg = TB_WHITE;
@@ -29,6 +30,16 @@ Label :: ~Label()
 
 void Label :: process(struct tb_event* event)
 {
+	/* Placeholder for virtual function */
+}
+
+void Label :: set_text(char *text)
+{
+	/* Free the old text */
+	free(this->text);
+
+	/* Duplicate the new text */
+	this->text = strdup(text);
 }
 
 void Label :: draw(int x, int y, State state)
