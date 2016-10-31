@@ -12,7 +12,7 @@
   #define TB_BOX_se 0x250C		// => NW
 
   #define TB_CHAR_SPACE 0x0020
-
+  #define TB_CHAR_ENTER 0x21B5
 
 
 #endif

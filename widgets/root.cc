@@ -8,6 +8,7 @@
 #include "root.hh"
 #include "widget.hh"
 
+#include "widgets.hh"
 /* Linked list functions */
 
 struct Widget_cell* widgets_getlast(struct Widget_cell *current);
