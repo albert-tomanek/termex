@@ -9,13 +9,14 @@
 #include "widget.hh"
 #include "entry.hh"
 
-Entry :: Entry(int width)
+Entry :: Entry(int width, enum Entry_buttonsetting enter_button)
 {
 	/* Initialise variables */
 	this->width = (uint16_t) width;
 	this->text  = (char*) calloc(this->width+1, sizeof(char));	// Get us memory to save text into
 
 	this->state = NORMAL;				// Make the button inactive; for the enum see widget.hh
+	this->enter_button = enter_button;
 	this->process_state();
 
 	this->callback_function = NULL;		// No callback function yet
@@ -101,7 +102,8 @@ void Entry :: process(struct tb_event* event)
 			case (TB_KEY_ENTER):
 			{
 				/* To submit the text in the box */
-				this->press();
+				if (this->enter_button != NO_BUTTON)
+					this->press();							// Only if we have an enter button
 				break;
 			}
 		}
@@ -146,9 +148,19 @@ void Entry :: draw(int x, int y, State state)
 
 	for (int i = 0; i < this->width; i++)
 	{
+		/* Fill the box with text */
 		tb_change_cell(this->x + i, this->y, (uint32_t) this->text[i] ? this->text[i] : ' ', this->fg, this->bg);
 	}
-
-	tb_change_cell(this->x+this->width  , this->y, (uint32_t) TB_CHAR_ENTER, this->bfg, this->bbg);
-	tb_change_cell(this->x+this->width+1, this->y, (uint32_t) ' ', this->bfg, this->bbg);
+	
+	if (state == SELECT && strlen(this->text) < this->width)
+	{
+		/* Print a cursor */
+		tb_change_cell(this->x + strlen(this->text), this->y, '_', this->fg | TB_BOLD, this->bg);
+	}
+	
+	if (this->enter_button != NO_BUTTON)
+	{
+		tb_change_cell(this->x+this->width  , this->y, (uint32_t) TB_CHAR_ENTER, this->bfg, this->bbg);
+		tb_change_cell(this->x+this->width+1, this->y, (uint32_t) ' ', this->bfg, this->bbg);
+	}
 }

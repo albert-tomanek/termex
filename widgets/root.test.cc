@@ -43,7 +43,7 @@ int main()
 	root->add(button2, 12, 2);
 	root->add(label, 2, 6);
 	
-	Entry *entry = new Entry(12);	// Widget 3
+	Entry *entry = new Entry(12, WITH_BUTTON);	// Widget 3
 	entry->bind(entry_callback);
 	root->add(entry, 3, 12);
 	

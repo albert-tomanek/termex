@@ -7,18 +7,25 @@
 #ifndef __TX_W_ENTRY_H__
   #define __TX_W_ENTRY_H__
 
+  enum Entry_buttonsetting {
+      WITH_BUTTON,
+	  NO_BUTTON
+  };
+
   class Entry : public Widget
   {
-	  uint16_t bbg, bfg;	// Button forground & background
 	  uint16_t width;
 	  void (*callback_function)(Entry *self);
+
+	  enum Entry_buttonsetting enter_button;	// whether there actually *is* a button
+	  uint16_t bbg, bfg;	// Button forground & background
 
 	  void process_state();
   public:
 	  char *text;
 
 	  /* Constructor and destructor */
-	  Entry(int width);
+	  Entry(int width, enum Entry_buttonsetting enter_button=NO_BUTTON);
 	  ~Entry();
 
 	  /* Other stuff */
