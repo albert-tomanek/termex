@@ -144,14 +144,18 @@ void Root :: mainloop()
 		{
 			switch (event->key)
 			{
-				case (TB_KEY_CTRL_Q):			// Ctrl-Q Quits the ends the mainloop...
+				case (TB_KEY_CTRL_Q):			// Ctrl-Q quits the mainloop...
 				{
 					this->run = false;
 					break;
 				}
 				case (TB_KEY_TAB):				// TAB changes the active widget
 				{
-					this->active_widget = this->active_widget->next;
+					do		// Select the next SELECTABLE widget
+					{
+						this->active_widget = this->active_widget->next;
+					} while (! this->active_widget->widget->selectable);
+					
 					break;
 				}
 

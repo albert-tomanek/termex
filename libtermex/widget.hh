@@ -24,12 +24,13 @@
 	  uint16_t bg;
 	  uint8_t  x;
       uint8_t  y;
+	  bool selectable;		// Whether thw widget can be selected or not
 
 	  Root *parent;
 
 	  /* Virtual functions */
-	  virtual void draw(int x, int y, State state) {};
-	  virtual void process(struct tb_event* event) {};        // Process events like keypresses
+	  virtual void  draw(int x, int y, State state) {};
+	  virtual void  process(struct tb_event* event) {};        // Process events like keypresses
   };
 
 #endif

@@ -11,6 +11,7 @@
 Label :: Label(char *text)
 {
 	/* Make the button inactive */
+	this->selectable = false;
 	this->state = NORMAL;				// For the enum see widget.hh
 	this->parent = NULL;				// No parents yet
 

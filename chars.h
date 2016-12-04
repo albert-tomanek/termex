@@ -6,8 +6,8 @@
   #define USE_UNICODE
   //#define USE_ASCII
 
-  // The letters signify the compas points to which the lines are pointing
-  /* Box drawing chars  */
+  /* The chars */
+  
   #ifdef USE_UNICODE
     #define TB_BOX_ew 0x2500		// => S / N
     #define TB_BOX_sw 0x2510		// => NE

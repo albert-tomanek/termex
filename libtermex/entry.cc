@@ -14,7 +14,8 @@ Entry :: Entry(int width, enum Entry_buttonsetting enter_button)
 	/* Initialise variables */
 	this->width = (uint16_t) width;
 	this->text  = (char*) calloc(this->width+1, sizeof(char));	// Get us memory to save text into
-
+	
+	this->selectable = true;
 	this->state = NORMAL;				// Make the button inactive; for the enum see widget.hh
 	this->enter_button = enter_button;
 	this->process_state();

@@ -12,6 +12,7 @@
 Button :: Button(char *text)
 {
 	/* Initialise variables */
+	this->selectable = true;
 	this->state = NORMAL;				// Make the button inactive; for the enum see widget.hh
 	this->callback_function = NULL;		// No callback function yet
 	this->parent = NULL;				// No parents yet
