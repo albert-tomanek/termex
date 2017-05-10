@@ -118,7 +118,7 @@ void Root :: draw_all()
 void Root :: mainloop()
 {
 	this->run = true;
-	struct tb_event *event = (struct tb_event*) malloc(sizeof(struct tb_event));
+	struct tb_event *event = new tb_event;
 
 	/* The update loop */
 
@@ -166,6 +166,9 @@ void Root :: mainloop()
 			}
 		}
 	}
+	
+	/* Free our event struct */
+	delete event;
 
 	/* Get rid of termbox */
 	tb_shutdown();

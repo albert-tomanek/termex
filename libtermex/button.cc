@@ -18,8 +18,10 @@ Button :: Button(char *text)
 	this->parent = NULL;				// No parents yet
 
 	/* Set the default colours */
-	this->fg = TB_WHITE;
-	this->bg = TB_BLUE;
+	this->attrs->fg = TB_WHITE;
+	this->attrs->bg = TB_BLUE;
+	this->attrs->text_fg = TB_WHITE;
+	this->attrs->text_bg = TB_BLUE;
 
 	/* Point to a copy of the button text */
 	this->text = strdup(text);
@@ -85,9 +87,9 @@ void Button :: draw(int x, int y, State state)
 	this->process_state();
 
 	//		+2 for padding on each side, +1 because we start counting at 0; in case of 'foo' the button is 6 wide
-	tb_draw_box_wh(x, y, strlen(this->text)+2+1, 2, this->fg, this->bg);	// <- odd wierdness with numbers
+	tb_draw_box_wh(x, y, strlen(this->text)+2+1, 2, this->attrs->fg, this->attrs->bg);	// <- odd wierdness with numbers
 
-	tb_print(x+2, y+1, this->text, this->fg, this->bg);
+	tb_print(x+2, y+1, this->text, this->attrs->text_fg, this->attrs->text_bg);
 }
 
 void Button :: process_state()
@@ -97,16 +99,23 @@ void Button :: process_state()
 	switch(this->state)
 	{
 	case NORMAL:
-		this->bg = TB_BLUE;
-		this->fg = TB_WHITE;
+		this->attrs->fg      = this->custom_attrs ? this->custom_attrs->fg      : TB_WHITE;
+		this->attrs->bg      = this->custom_attrs ? this->custom_attrs->bg      : TB_BLUE;
+		this->attrs->text_fg = this->custom_attrs ? this->custom_attrs->text_fg : TB_WHITE;
+		this->attrs->text_bg = this->custom_attrs ? this->custom_attrs->text_bg : TB_BLUE;
+
 	break;
 	case SELECT:
-		this->bg = TB_RED;
-		this->fg = TB_WHITE;
+		this->attrs->fg = TB_WHITE;
+		this->attrs->bg = TB_RED;
+		this->attrs->text_fg = TB_WHITE;
+		this->attrs->text_bg = TB_RED;
 	break;
 	case PRESSED:
-		this->bg = TB_RED;
-		this->fg = TB_WHITE | TB_BOLD;
+		this->attrs->fg = TB_WHITE | TB_BOLD;
+		this->attrs->bg = TB_RED;
+		this->attrs->text_fg = TB_WHITE | TB_BOLD;
+		this->attrs->text_bg = TB_RED;
 	break;
 	}
 }

@@ -24,8 +24,10 @@ Entry :: Entry(int width, enum Entry_buttonsetting enter_button)
 	this->parent = NULL;				// No parents yet
 
 	/* Set the default colours */
-	this->fg = TB_WHITE;
-	this->bg = TB_BLUE;
+	this->attrs->fg = TB_WHITE;
+	this->attrs->bg = TB_BLUE;
+	this->attrs->text_fg = TB_WHITE;
+	this->attrs->text_bg = TB_BLUE;
 }
 
 Entry :: ~Entry()
@@ -119,20 +121,20 @@ void Entry :: process_state()
 	switch(this->state)
 	{
 	case NORMAL:
-		this->bg  = TB_BLACK;
-		this->fg  = TB_WHITE;
+		this->attrs->bg  = TB_BLACK;
+		this->attrs->fg  = TB_WHITE;
 		this->bbg = TB_BLUE;
 		this->bfg = TB_WHITE;
 	break;
 	case SELECT:
-		this->bg  = TB_BLACK;
-		this->fg  = TB_WHITE;
+		this->attrs->bg  = TB_BLACK;
+		this->attrs->fg  = TB_WHITE;
 		this->bbg = TB_RED;
 		this->bfg = TB_WHITE;
 	break;
 	case PRESSED:
-		this->bg  = TB_BLACK;
-		this->fg  = TB_WHITE;
+		this->attrs->bg  = TB_BLACK;
+		this->attrs->fg  = TB_WHITE;
 		this->bbg = TB_RED;
 		this->bfg = TB_WHITE | TB_BOLD;
 	break;
@@ -150,13 +152,13 @@ void Entry :: draw(int x, int y, State state)
 	for (int i = 0; i < this->width; i++)
 	{
 		/* Fill the box with text */
-		tb_change_cell(this->x + i, this->y, (uint32_t) this->text[i] ? this->text[i] : ' ', this->fg, this->bg);
+		tb_change_cell(this->x + i, this->y, (uint32_t) this->text[i] ? this->text[i] : ' ', this->attrs->fg, this->attrs->bg);
 	}
 	
 	if (state == SELECT && strlen(this->text) < this->width)
 	{
 		/* Print a cursor */
-		tb_change_cell(this->x + strlen(this->text), this->y, '_', this->fg | TB_BOLD, this->bg);
+		tb_change_cell(this->x + strlen(this->text), this->y, '_', this->attrs->fg | TB_BOLD, this->attrs->bg);
 	}
 	
 	if (this->enter_button != NO_BUTTON)

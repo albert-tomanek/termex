@@ -1,9 +1,10 @@
 #!/bin/sh
 
 g++ misc.c    -ltermbox -c
+g++ widget.cc -ltermbox -c
 g++ entry.cc  -ltermbox -c
 g++ button.cc -ltermbox -c
 g++ label.cc  -ltermbox -c
 g++ root.cc   -ltermbox -c
 
-g++ root.test.cc misc.o entry.o button.o label.o root.o -ltermbox -Wno-write-strings -o root.test
+g++ root.test.cc misc.o widget.o entry.o button.o label.o root.o -ltermbox -Wno-write-strings -o root.test

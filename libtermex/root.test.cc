@@ -2,6 +2,9 @@
 #include "widgets.hh"
 #include "widget.hh"
 #include "root.hh"
+#include "attrs.hh"
+
+Attrs custom_attrs = {TB_YELLOW, TB_RED, TB_MAGENTA, TB_CYAN};
 
 void button1_callback(Button *button1)
 {
@@ -53,13 +56,25 @@ int main()
 	Button *quitButton = new Button("Quit");
 	Label  *quitLabel  = new Label("Press this button, or Ctrl+Q to quit.");
 	quitButton->bind(quitButton_callback);
+	quitButton->use_custom_attrs(&custom_attrs);
 	
 	root->add(quitButton, 2, root->height()-4 );
 	root->add(quitLabel, 10, root->height()-4 );
 	
 	root->mainloop();
 	
+	/* Free memory */
+	
+	delete button1;
+	delete button2;
+	delete label;
+	
+	delete entry;
+	delete entryLabel;
+	delete quitButton;
+	delete quitLabel;
+	
+	delete root;
+	
 	return 0;
 }
-
-
