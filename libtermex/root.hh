@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "widgets.hh"
+#include "widget.hh"
 #include "params.h"
 
 #ifndef __TX_ROOT_H__
@@ -16,7 +16,6 @@
   };
 
   // Root class
-
   class Root
   {
 	  uint16_t x, y;

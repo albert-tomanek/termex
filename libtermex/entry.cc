@@ -14,8 +14,9 @@ Entry :: Entry(int width, enum Entry_buttonsetting enter_button)
 	/* Initialise variables */
 	this->width = (uint16_t) width;
 	this->text  = (char*) calloc(this->width+1, sizeof(char));	// Get us memory to save text into
-	
+
 	this->selectable = true;
+	this->cscheme = &Entry_default_cscheme;		// See header
 	this->state = NORMAL;				// Make the button inactive; for the enum see widget.hh
 	this->enter_button = enter_button;
 	this->process_state();
@@ -24,10 +25,10 @@ Entry :: Entry(int width, enum Entry_buttonsetting enter_button)
 	this->parent = NULL;				// No parents yet
 
 	/* Set the default colours */
-	this->attrs->fg = TB_WHITE;
-	this->attrs->bg = TB_BLUE;
-	this->attrs->text_fg = TB_WHITE;
-	this->attrs->text_bg = TB_BLUE;
+	this->fg = TB_WHITE;
+	this->bg = TB_BLUE;
+	this->text_fg = TB_WHITE;
+	this->text_bg = TB_BLUE;
 }
 
 Entry :: ~Entry()
@@ -114,33 +115,6 @@ void Entry :: process(struct tb_event* event)
 	}
 }
 
-void Entry :: process_state()
-{
-	/* This function processes this->state, and changes the colours accordingly */
-
-	switch(this->state)
-	{
-	case NORMAL:
-		this->attrs->bg  = TB_BLACK;
-		this->attrs->fg  = TB_WHITE;
-		this->bbg = TB_BLUE;
-		this->bfg = TB_WHITE;
-	break;
-	case SELECT:
-		this->attrs->bg  = TB_BLACK;
-		this->attrs->fg  = TB_WHITE;
-		this->bbg = TB_RED;
-		this->bfg = TB_WHITE;
-	break;
-	case PRESSED:
-		this->attrs->bg  = TB_BLACK;
-		this->attrs->fg  = TB_WHITE;
-		this->bbg = TB_RED;
-		this->bfg = TB_WHITE | TB_BOLD;
-	break;
-	}
-}
-
 void Entry :: draw(int x, int y, State state)
 {
 	this->x = x;
@@ -152,18 +126,45 @@ void Entry :: draw(int x, int y, State state)
 	for (int i = 0; i < this->width; i++)
 	{
 		/* Fill the box with text */
-		tb_change_cell(this->x + i, this->y, (uint32_t) this->text[i] ? this->text[i] : ' ', this->attrs->fg, this->attrs->bg);
+		tb_change_cell(this->x + i, this->y, (uint32_t) this->text[i] ? this->text[i] : ' ', this->text_fg, this->text_bg);
 	}
-	
+
 	if (state == SELECT && strlen(this->text) < this->width)
 	{
 		/* Print a cursor */
-		tb_change_cell(this->x + strlen(this->text), this->y, '_', this->attrs->fg | TB_BOLD, this->attrs->bg);
+		tb_change_cell(this->x + strlen(this->text), this->y, '_', this->text_fg | TB_BOLD, this->text_bg);
 	}
-	
+
 	if (this->enter_button != NO_BUTTON)
 	{
-		tb_change_cell(this->x+this->width  , this->y, (uint32_t) TB_CHAR_ENTER, this->bfg, this->bbg);
-		tb_change_cell(this->x+this->width+1, this->y, (uint32_t) ' ', this->bfg, this->bbg);
+		tb_change_cell(this->x+this->width  , this->y, (uint32_t) TB_CHAR_ENTER, this->fg, this->bg);
+		tb_change_cell(this->x+this->width+1, this->y, (uint32_t) ' ', this->fg, this->bg);
+	}
+}
+
+void Entry :: process_state()
+{
+	/* This function processes this->state, and changes the colours accordingly */
+
+	switch(this->state)
+	{
+		case NORMAL:
+		this->fg       = this->cscheme->normal_fg;
+		this->bg       = this->cscheme->normal_bg;
+		this->text_fg  = this->cscheme->normal_text_fg;
+		this->text_bg  = this->cscheme->normal_text_bg;
+		break;
+		case SELECT:
+		this->fg       = this->cscheme->select_fg;
+		this->bg       = this->cscheme->select_bg;
+		this->text_fg  = this->cscheme->select_text_fg;
+		this->text_bg  = this->cscheme->select_text_bg;
+		break;
+		case PRESSED:
+		this->fg       = this->cscheme->pressed_fg;
+		this->bg       = this->cscheme->pressed_bg;
+		this->text_fg  = this->cscheme->pressed_text_fg;
+		this->text_bg  = this->cscheme->pressed_text_bg;
+		break;
 	}
 }

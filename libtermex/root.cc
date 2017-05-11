@@ -155,7 +155,7 @@ void Root :: mainloop()
 					{
 						this->active_widget = this->active_widget->next;
 					} while (! this->active_widget->widget->selectable);
-					
+
 					break;
 				}
 
@@ -166,7 +166,7 @@ void Root :: mainloop()
 			}
 		}
 	}
-	
+
 	/* Free our event struct */
 	delete event;
 

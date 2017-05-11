@@ -13,15 +13,10 @@ Button :: Button(char *text)
 {
 	/* Initialise variables */
 	this->selectable = true;
+	this->cscheme = &Button_default_cscheme;	// See header
 	this->state = NORMAL;				// Make the button inactive; for the enum see widget.hh
 	this->callback_function = NULL;		// No callback function yet
 	this->parent = NULL;				// No parents yet
-
-	/* Set the default colours */
-	this->attrs->fg = TB_WHITE;
-	this->attrs->bg = TB_BLUE;
-	this->attrs->text_fg = TB_WHITE;
-	this->attrs->text_bg = TB_BLUE;
 
 	/* Point to a copy of the button text */
 	this->text = strdup(text);
@@ -87,9 +82,9 @@ void Button :: draw(int x, int y, State state)
 	this->process_state();
 
 	//		+2 for padding on each side, +1 because we start counting at 0; in case of 'foo' the button is 6 wide
-	tb_draw_box_wh(x, y, strlen(this->text)+2+1, 2, this->attrs->fg, this->attrs->bg);	// <- odd wierdness with numbers
+	tb_draw_box_wh(x, y, strlen(this->text)+2+1, 2, this->fg, this->bg);	// <- odd wierdness with numbers
 
-	tb_print(x+2, y+1, this->text, this->attrs->text_fg, this->attrs->text_bg);
+	tb_print(x+2, y+1, this->text, this->text_fg, this->text_bg);
 }
 
 void Button :: process_state()
@@ -99,23 +94,23 @@ void Button :: process_state()
 	switch(this->state)
 	{
 	case NORMAL:
-		this->attrs->fg      = this->custom_attrs ? this->custom_attrs->fg      : TB_WHITE;
-		this->attrs->bg      = this->custom_attrs ? this->custom_attrs->bg      : TB_BLUE;
-		this->attrs->text_fg = this->custom_attrs ? this->custom_attrs->text_fg : TB_WHITE;
-		this->attrs->text_bg = this->custom_attrs ? this->custom_attrs->text_bg : TB_BLUE;
+		this->fg      = this->cscheme->normal_fg;
+		this->bg      = this->cscheme->normal_bg;
+		this->text_fg = this->cscheme->normal_text_fg;
+		this->text_bg = this->cscheme->normal_text_bg;
 
 	break;
 	case SELECT:
-		this->attrs->fg = TB_WHITE;
-		this->attrs->bg = TB_RED;
-		this->attrs->text_fg = TB_WHITE;
-		this->attrs->text_bg = TB_RED;
+		this->fg      = this->cscheme->select_fg;
+		this->bg      = this->cscheme->select_bg;
+		this->text_fg = this->cscheme->select_text_fg;
+		this->text_bg = this->cscheme->select_text_bg;
 	break;
 	case PRESSED:
-		this->attrs->fg = TB_WHITE | TB_BOLD;
-		this->attrs->bg = TB_RED;
-		this->attrs->text_fg = TB_WHITE | TB_BOLD;
-		this->attrs->text_bg = TB_RED;
+		this->fg      = this->cscheme->pressed_fg;
+		this->bg      = this->cscheme->pressed_bg;
+		this->text_fg = this->cscheme->pressed_text_fg;
+		this->text_bg = this->cscheme->pressed_text_bg;
 	break;
 	}
 }
